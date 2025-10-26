@@ -1,28 +1,32 @@
-import { useState } from 'react'
+import React, { useState } from 'react';
+import Header from './components/Header';
+import SearchPanel from './components/SearchPanel';
+import Essentials from './components/Essentials';
+import Explorer from './components/Explorer';
+import { I18nProvider } from './components/i18n';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [lang, setLang] = useState('en');
+  const [query, setQuery] = useState({
+    destination: 'Paris',
+    checkin: '',
+    checkout: '',
+    adults: 2,
+  });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
+    <I18nProvider lang={lang} setLang={setLang}>
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white text-slate-900">
+        <Header />
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+          <SearchPanel query={query} setQuery={setQuery} />
+          <Essentials query={query} />
+          <Explorer query={query} />
+        </main>
+        <footer className="text-center py-8 text-sm text-slate-500">
+          <p>Built for travelers. Data from Open-Meteo and Wikivoyage. External links to official providers.</p>
+        </footer>
       </div>
-    </div>
-  )
+    </I18nProvider>
+  );
 }
-
-export default App
