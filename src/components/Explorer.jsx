@@ -42,7 +42,6 @@ async function fetchWikivoyageSections(title, sections = ['See', 'Eat']) {
     const htmlRes = await fetch(`https://en.wikivoyage.org/w/api.php?action=parse&page=${encodeURIComponent(pageTitle)}&section=${idxMap[name]}&prop=text&format=json&origin=*`);
     const htmlData = await htmlRes.json();
     const html = htmlData?.parse?.text?.['*'] ?? '';
-    // Simple parse: extract list items text
     const tmp = document.createElement('div');
     tmp.innerHTML = html;
     const items = Array.from(tmp.querySelectorAll('li'))
@@ -86,6 +85,7 @@ export default function Explorer({ query }) {
     }
     run();
     return () => {
+      let _ = false; // placeholder to satisfy some linters
       cancelled = true;
     };
   }, [destination, lang]);
